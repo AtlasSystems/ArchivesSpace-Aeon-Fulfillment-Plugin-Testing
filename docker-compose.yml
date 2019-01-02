@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  aspace:
+    image: archivesspace/archivesspace:latest
+    volumes:
+      - ./ArchivesSpace-Aeon-Fulfillment-Plugin:/archivesspace/plugins/aeon_fulfillment:ro
+      - ./docker/config.rb:/archivesspace/config/config.rb:ro
+      - ./docker/archivesspace_demo_db:/archivesspace/data/archivesspace_demo_db
+    ports:
+      - 8080:8080
+      - 8081:8081
+      - 8089:8089
+
