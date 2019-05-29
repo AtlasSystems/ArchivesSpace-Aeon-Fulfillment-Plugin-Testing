@@ -3,6 +3,8 @@ version: '3.1'
 services:
   aspace:
     image: archivesspace/archivesspace:latest
+    environment:
+      APPCONFIG_DB_URL: "jdbc:mysql://db:3306/archivesspace?useUnicode=true&characterEncoding=UTF-8&user=as&password=as123"
     volumes:
       - ./ArchivesSpace-Aeon-Fulfillment-Plugin:/archivesspace/plugins/aeon_fulfillment:ro
       - ./docker/config.rb:/archivesspace/config/config.rb:ro
@@ -11,4 +13,22 @@ services:
       - 8080:8080
       - 8081:8081
       - 8089:8089
+    depends_on:
+      - db
+  db:
+    image: mysql/mysql-server:5.7
+    command: --character-set-server=utf8 --collation-server=utf8_unicode_ci --innodb_buffer_pool_size=2G --innodb_buffer_pool_instances=2 --lower_case_table_names=1
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: archivesspace
+      MYSQL_USER: as
+      MYSQL_PASSWORD: as123
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  adminer:
+    image: adminer
+
+volumes:
+  mysql_data:
 
